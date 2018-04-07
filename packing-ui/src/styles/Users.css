@@ -1,0 +1,9 @@
+.users-navbar {
+  background-color: #08175f;
+  color: white;
+  height: 3em;
+}
+
+.user {
+  display:inline;
+}
