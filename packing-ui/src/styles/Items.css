@@ -1,0 +1,21 @@
+.item-list {
+  background-color:#e2e2e2;
+  width: 20em;
+  position: sticky;
+  float:left;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid black;
+  color: white;
+}
+
+.items {
+  text-align: left;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.item {
+  color: black;
+  border: 1px solid black;
+}

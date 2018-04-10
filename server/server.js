@@ -46,6 +46,33 @@ let items = [
   },
 ];
 
+let boxes = [
+  {
+  "id": "603f95f2­5f84­427c­b697­1b6318f93311",
+  "name": "box A",
+  "total_allowed_weight": 10,
+  "items": []
+  },
+  {
+  "id": "17cd977b­db7b­4bb8­ab83­68ad64134967",
+  "name": "box B",
+  "total_allowed_weight": 20,
+  "items": []
+  },
+  {
+  "id": "3208c229­9a0a­4e3a­bbfa­4cf2e600d917",
+  "name": "box C",
+  "total_allowed_weight": 5,
+  "items": []
+  },
+  {
+  "id": "176c0a0b­c9e7­4ae7­8be0­c8079bda57a7",
+  "name": "box D",
+  "total_allowed_weight": 4,
+  "items": []
+  }
+];
+
 // Broadcast function that uses sends messages to everyone that is connected (payload being any message could be in there)
 wss.broadcast = function broadcast(payload) {
   wss.clients.forEach(function each(client) {
@@ -94,7 +121,7 @@ wss.on('connection', (ws) => {
   users.push(newUser);
   currentWebSockets.push(ws);
   console.log(`${newUser.name} connected!`);
-  let payload = JSON.stringify({ usersOnline: users, currentUser: newUser, items: items, type: "connected" });
+  let payload = JSON.stringify({ usersOnline: users, currentUser: newUser, items: items, boxes: boxes, type: "connected" });
   wss.broadcast(payload);
 
   ws.on('close', () => {

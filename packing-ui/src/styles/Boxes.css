@@ -1,0 +1,22 @@
+.box-list {
+
+  float:right;
+  width: 20em;
+}
+
+.box {
+  color:black;
+  background-color:#e2e2e2;
+  width: 20em;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid black;
+  color: black;
+  margin-bottom: 1em;
+}
+
+.box-items {
+  background-color: white;
+  height: 4em;
+  border: 1px solid black;
+}
