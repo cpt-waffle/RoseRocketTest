@@ -10,7 +10,7 @@ class Users extends Component {
     }
     return (
       <div className='users-navbar'>
-        {array}
+        <b>Users Online:</b>{array}
       </div>
     );
   }

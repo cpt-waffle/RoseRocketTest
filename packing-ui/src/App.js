@@ -17,8 +17,13 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
   }
 
-  addItem = (item,box) => {
-    console.log("added " + item + "to box " + box);
+  addItemToBox = (itemId,boxId) => {
+    let payload = {
+      type: 'addItemToBox',
+      boxId: boxId,
+      itemId: itemId,
+    }
+    this.socket.send(JSON.stringify(payload));
   }
 
   componentDidMount() {
@@ -29,8 +34,12 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const payload = JSON.parse(event.data);
       if (payload.type === 'connected') {
-        console.log(payload.boxes);
         this.setState({usersOnline: payload.usersOnline, items: payload.items, boxes: payload.boxes});
+      }
+
+      if (payload.type === 'addItemToBox') {
+        console.log(payload.boxes[0].items);
+        this.setState({boxes: payload.boxes});
       }
 
       if (payload.type === 'disconnected_user') {
@@ -45,7 +54,7 @@ class App extends Component {
         <Users users={this.state.usersOnline}/>
         <div className="lists">
           <ItemList items={this.state.items}/>
-          <BoxList boxes={this.state.boxes} addItemFunction={this.addItem}/>
+          <BoxList boxes={this.state.boxes} addItemFunction={this.addItemToBox}/>
         </div>
       </div>
     );

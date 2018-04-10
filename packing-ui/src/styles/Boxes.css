@@ -17,6 +17,6 @@
 
 .box-items {
   background-color: white;
-  height: 4em;
   border: 1px solid black;
+  padding-bottom: 2em;
 }

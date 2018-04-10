@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import '../styles/Boxes.css';
-import { Draggable, Droppable } from 'react-drag-and-drop';
+import { Droppable } from 'react-drag-and-drop';
 
 class Box extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-  }
-
-
 
   onDrop = (data) => {
       console.log(data);
-      this.props.addItemFunction(data.item , this.props.boxName);
+      this.props.addItemFunction(data.item , this.props.boxId);
   }
 
-
-
   render() {
-
+    let items = [];
+    for (let i in this.props.items) {
+      items.push(<p key={i}>{this.props.items[i].name}</p>)
+    }
     return (
       <div className="box">
         <p>Name: {this.props.boxName} Weight: {this.props.boxWeight}</p>
         <div>
           Items
           <Droppable types={'item'} onDrop={this.onDrop}>
-            <ul className="box-items">
-            </ul>
+            <div className="box-items">
+              {items}
+            </div>
           </Droppable>
         </div>
       </div>

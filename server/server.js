@@ -73,6 +73,23 @@ let boxes = [
   }
 ];
 
+const findBox = (id) => {
+  for (let i in boxes) {
+    if (boxes[i].id == id)
+      return i;
+  }
+  return null;
+}
+
+const findItem = (id) => {
+  for (let i in items) {
+    if (items[i].id == id)
+      return i;
+  }
+  return null;
+}
+
+
 // Broadcast function that uses sends messages to everyone that is connected (payload being any message could be in there)
 wss.broadcast = function broadcast(payload) {
   wss.clients.forEach(function each(client) {
@@ -123,6 +140,18 @@ wss.on('connection', (ws) => {
   console.log(`${newUser.name} connected!`);
   let payload = JSON.stringify({ usersOnline: users, currentUser: newUser, items: items, boxes: boxes, type: "connected" });
   wss.broadcast(payload);
+
+  ws.on('message', (event) => {
+    let msgContents = JSON.parse(event);
+    if (msgContents.type === 'addItemToBox') {
+      console.log("Add Item to Box");
+      let boxIndex = findBox(msgContents.boxId);
+      let itemIndex = findItem(msgContents.itemId);
+      boxes[boxIndex].items.push(items[itemIndex]);
+      let payload = JSON.stringify({type: "addItemToBox", boxes: boxes});
+      wss.broadcast(payload);
+    }
+  });
 
   ws.on('close', () => {
     disconnectUser();

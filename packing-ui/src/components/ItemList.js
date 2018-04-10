@@ -8,7 +8,7 @@ class ItemList extends Component {
   render() {
     let array = [];
     for (let i in this.props.items) {
-      array.push( <Draggable type="item" data={this.props.items[i].name}>
+      array.push( <Draggable key={i} type="item" data={this.props.items[i].id} >
                     <Item itemName={this.props.items[i].name} key={i} itemWeight={this.props.items[i].weight}/>
                   </Draggable>);
     }
