@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Draggable } from 'react-drag-and-drop';
 import '../styles/Items.css';
 import Item from './Item';
+import { Button } from 'reactstrap';
 
 class ItemList extends Component {
 
@@ -22,7 +23,7 @@ class ItemList extends Component {
     return (
       <div className='item-list'>
         <div className='item-list-nav'>
-          <span>Items Available</span>
+          <span>Items Available</span><Button color="info" size="sm" onClick={this.props.addItemToListFunction}>Add Item</Button>
         </div>
         <div className="items">
           {array}
