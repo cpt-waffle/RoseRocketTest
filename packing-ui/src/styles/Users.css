@@ -1,9 +1,12 @@
 .users-navbar {
   background-color: #24292e;
   color: white;
-  height: 3em;
+  height: 20%;
+  padding-left:5px;
+  padding-bottom:1em;
 }
 
 .user {
   display:inline;
+  padding-left:6px;
 }

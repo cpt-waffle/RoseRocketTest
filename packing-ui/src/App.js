@@ -123,7 +123,7 @@ class App extends Component {
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" disabled={this.state.modalSubmitButton} onClick={this.createNewItem}>Do Something</Button>{' '}
+            <Button color="primary" disabled={this.state.modalSubmitButton} onClick={this.createNewItem}>Add</Button>{' '}
             <Button color="secondary" onClick={this.newItemModal}>Cancel</Button>
           </ModalFooter>
         </Modal>

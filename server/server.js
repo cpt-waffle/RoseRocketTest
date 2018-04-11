@@ -165,11 +165,11 @@ wss.on('connection', (ws) => {
       };
       items.push(tempItem);
       let payload = JSON.stringify({type: "addNewItemToList", items: items});
+      console.log("Added Item to List");
       wss.broadcast(payload);
     }
 
     if (msgContents.type === 'addItemToBox') {
-      console.log("Add Item to Box");
       let boxIndex = findBox(msgContents.boxId);
       let itemIndex = findItem(msgContents.itemId);
       if ((boxes[boxIndex].current_weight + items[itemIndex].weight) <= boxes[boxIndex].total_allowed_weight) {
@@ -177,23 +177,29 @@ wss.on('connection', (ws) => {
         boxes[boxIndex].items.push(items[itemIndex]);
         items[itemIndex].box_id = msgContents.boxId;
         let payload = JSON.stringify({type: "addItemToBox", boxes: boxes, items: items});
+        console.log("Added Item to Box");
         wss.broadcast(payload);
+      } else {
+        let err = "could not item to a box";
+        console.log(err);
       }
     }
 
     if (msgContents.type === 'removeItemFromBox') {
-      console.log("remove Item to Box");
       let boxIndex = findBox(msgContents.boxId);
       let itemIndex = findItem(msgContents.itemId);
       if (boxIndex != null && itemIndex != null) {
         let itemWithinBoxIndex = findItemWithinBox(boxes[boxIndex], items[itemIndex].id);
-        console.log(itemWithinBoxIndex);
         if (itemWithinBoxIndex != null) {
           boxes[boxIndex].current_weight -= items[itemIndex].weight;
           boxes[boxIndex].items.splice(itemWithinBoxIndex, 1);
           items[itemIndex].box_id = null;
           let payload = JSON.stringify({type: "removeItemFromBox", boxes: boxes, items: items});
+          console.log("removed item from box");
           wss.broadcast(payload);
+        } else {
+          let err = "could not remove item from box";
+          console.log(err);
         }
       }
     }
