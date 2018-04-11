@@ -6,7 +6,6 @@ import { Button } from 'reactstrap';
 class Box extends Component {
 
   onDrop = (data) => {
-      console.log(data);
       this.props.addItemFunction(data.item , this.props.boxId);
   }
 

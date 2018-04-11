@@ -155,6 +155,19 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (event) => {
     let msgContents = JSON.parse(event);
+
+    if (msgContents.type === 'addNewItemToList'){
+      let tempItem =   {
+        "id": randomID(36),
+        "name": msgContents.itemName,
+        "weight": parseInt(msgContents.itemWeight),
+        "box_id": null
+      };
+      items.push(tempItem);
+      let payload = JSON.stringify({type: "addNewItemToList", items: items});
+      wss.broadcast(payload);
+    }
+
     if (msgContents.type === 'addItemToBox') {
       console.log("Add Item to Box");
       let boxIndex = findBox(msgContents.boxId);
