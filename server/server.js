@@ -12,7 +12,7 @@ let items = [
     "id": "06712e75­c148­4fe8­97cd­d90246ac4052",
     "name": "socks",
     "weight": 1,
-    "box_id": null
+    "box_id": null,
   },
   {
     "id": "5a683688­3970­4596­b476­757443deeafc",
@@ -24,13 +24,13 @@ let items = [
     "id": "f61d6425­de4f­4993­bc3c­fdcff41bfd84",
     "name": "laptop",
     "weight": 4,
-    "box_id": "17cd977b­db7b­4bb8­ab83­68ad64134967"
+    "box_id": null
   },
   {
     "id": "a4f173aa­db59­46a8­b016­875ca36381c8",
     "name": "watermelon",
     "weight": 7,
-    "box_id": "17cd977b­db7b­4bb8­ab83­68ad64134967"
+    "box_id": null
   },
   {
     "id": "430c6e28­b3b2­4720­aedf­174a35275563",
@@ -51,24 +51,28 @@ let boxes = [
   "id": "603f95f2­5f84­427c­b697­1b6318f93311",
   "name": "box A",
   "total_allowed_weight": 10,
+  "current_weight" : 0,
   "items": []
   },
   {
   "id": "17cd977b­db7b­4bb8­ab83­68ad64134967",
   "name": "box B",
   "total_allowed_weight": 20,
+  "current_weight" : 0,
   "items": []
   },
   {
   "id": "3208c229­9a0a­4e3a­bbfa­4cf2e600d917",
   "name": "box C",
   "total_allowed_weight": 5,
+  "current_weight" : 0,
   "items": []
   },
   {
   "id": "176c0a0b­c9e7­4ae7­8be0­c8079bda57a7",
   "name": "box D",
   "total_allowed_weight": 4,
+  "current_weight" : 0,
   "items": []
   }
 ];
@@ -84,6 +88,14 @@ const findBox = (id) => {
 const findItem = (id) => {
   for (let i in items) {
     if (items[i].id == id)
+      return i;
+  }
+  return null;
+}
+
+const findItemWithinBox = (box, itemId) => {
+  for (let i in box.items) {
+    if (box.items[i].id == itemId)
       return i;
   }
   return null;
@@ -147,9 +159,30 @@ wss.on('connection', (ws) => {
       console.log("Add Item to Box");
       let boxIndex = findBox(msgContents.boxId);
       let itemIndex = findItem(msgContents.itemId);
-      boxes[boxIndex].items.push(items[itemIndex]);
-      let payload = JSON.stringify({type: "addItemToBox", boxes: boxes});
-      wss.broadcast(payload);
+      if ((boxes[boxIndex].current_weight + items[itemIndex].weight) <= boxes[boxIndex].total_allowed_weight) {
+        boxes[boxIndex].current_weight += items[itemIndex].weight;
+        boxes[boxIndex].items.push(items[itemIndex]);
+        items[itemIndex].box_id = msgContents.boxId;
+        let payload = JSON.stringify({type: "addItemToBox", boxes: boxes, items: items});
+        wss.broadcast(payload);
+      }
+    }
+
+    if (msgContents.type === 'removeItemFromBox') {
+      console.log("remove Item to Box");
+      let boxIndex = findBox(msgContents.boxId);
+      let itemIndex = findItem(msgContents.itemId);
+      if (boxIndex != null && itemIndex != null) {
+        let itemWithinBoxIndex = findItemWithinBox(boxes[boxIndex], items[itemIndex].id);
+        console.log(itemWithinBoxIndex);
+        if (itemWithinBoxIndex != null) {
+          boxes[boxIndex].current_weight -= items[itemIndex].weight;
+          boxes[boxIndex].items.splice(itemWithinBoxIndex, 1);
+          items[itemIndex].box_id = null;
+          let payload = JSON.stringify({type: "removeItemFromBox", boxes: boxes, items: items});
+          wss.broadcast(payload);
+        }
+      }
     }
   });
 

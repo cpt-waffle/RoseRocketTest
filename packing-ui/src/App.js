@@ -26,6 +26,16 @@ class App extends Component {
     this.socket.send(JSON.stringify(payload));
   }
 
+  removeItemFromBox = (itemId, boxId) => {
+    let payload = {
+      type: 'removeItemFromBox',
+      boxId: boxId,
+      itemId: itemId,
+    }
+    console.log(payload);
+    this.socket.send(JSON.stringify(payload));
+  }
+
   componentDidMount() {
     this.socket.onopen = (event) => {
       console.log("connected!");
@@ -37,9 +47,8 @@ class App extends Component {
         this.setState({usersOnline: payload.usersOnline, items: payload.items, boxes: payload.boxes});
       }
 
-      if (payload.type === 'addItemToBox') {
-        console.log(payload.boxes[0].items);
-        this.setState({boxes: payload.boxes});
+      if (payload.type === 'addItemToBox' || payload.type === 'removeItemFromBox') {
+        this.setState({boxes: payload.boxes, items: payload.items});
       }
 
       if (payload.type === 'disconnected_user') {
@@ -54,7 +63,7 @@ class App extends Component {
         <Users users={this.state.usersOnline}/>
         <div className="lists">
           <ItemList items={this.state.items}/>
-          <BoxList boxes={this.state.boxes} addItemFunction={this.addItemToBox}/>
+          <BoxList boxes={this.state.boxes} addItemFunction={this.addItemToBox} removeItemFunction={this.removeItemFromBox}/>
         </div>
       </div>
     );

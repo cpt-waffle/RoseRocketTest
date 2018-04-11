@@ -10,12 +10,27 @@
 }
 
 .items {
-  text-align: left;
+  text-align: center;
   background-color: white;
+  border: 1px solid black;
+}
+.items-used {
+  text-align: left;
+  background-color: grey;
+  opacity: 0.5;
   border: 1px solid black;
 }
 
 .item {
   color: black;
   border: 1px solid black;
+}
+
+.left {
+  float: left;
+  text-align: left;
+}
+
+.right {
+  text-align: right;
 }
