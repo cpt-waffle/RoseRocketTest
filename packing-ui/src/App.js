@@ -38,7 +38,6 @@ class App extends Component {
       boxId: boxId,
       itemId: itemId,
     }
-    console.log(payload);
     this.socket.send(JSON.stringify(payload));
   }
 
@@ -48,7 +47,7 @@ class App extends Component {
 
   handleModalNameChange =(event) => {
     let disabledState;
-    if (event.target.value.length > 0) {
+    if (event.target.value.length > 0 && this.state.tempItemWeight > 0) {
       disabledState = false;
     }
     else {
@@ -59,7 +58,7 @@ class App extends Component {
 
   handleModalWeightChange = (event) =>{
     let disabledState;
-    if (event.target.value > 0) {
+    if (event.target.value > 0 && this.state.tempItemName.length > 0) {
       disabledState = false;
     }
     else {
@@ -74,7 +73,7 @@ class App extends Component {
       itemName: this.state.tempItemName,
       itemWeight: this.state.tempItemWeight,
     }
-    this.setState({tempItemName: '', tempItemWeight: '', modalSubmitButton: false, modalOpen: false});
+    this.setState({tempItemName: '', tempItemWeight: '', modalSubmitButton: true, modalOpen: false});
     this.socket.send(JSON.stringify(payload));
   }
 
