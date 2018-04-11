@@ -22,6 +22,7 @@ cd packing-ui
 npm install
 npm start
 ```
+If a browser does not open, go to `http://localhost:3000/` to see the app.
 
 # Used Cases and App Pictures
 
