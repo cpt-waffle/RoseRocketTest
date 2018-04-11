@@ -25,4 +25,4 @@ npm start
 
 # Used Cases and App Pictures
 
-This is all found in [FEATURES.md](https://www.google.com)
+This is all found in [FEATURES.md](https://github.com/vasiliy-klimkin/RoseRocketTest/blob/master/FEATURES.md)
